@@ -18,7 +18,7 @@ function EnhancedTimer:after(tag, duration, func)
     else
         return self.timer:after(tag, duration, func)
     end
-    
+
 end
 
 function EnhancedTimer:during(tag, duration, func, after)

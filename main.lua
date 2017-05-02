@@ -14,23 +14,16 @@ function love.load()
 
 	hyper_circle = HyperCircle(400, 300, 50, 10, 100)
 	input:bind('mouse1', 'circle')
-	timer:every(1, function()
-		print 'wow'
-	end)
 end
 
 function love.update(dt)
+	timer:update(dt)
 	hyper_circle:update(dt)
 	if input:pressed('circle') then
-		-- local new_radius = love.math.random() * 25 + 25
-		-- local new_outer_radius = new_radius + love.math.random() * 10 + 40
-		-- timer:tween(1, hyper_circle, {radius = new_radius}, 'out-elastic')
-		-- timer:tween(2, hyper_circle, {outer_radius = new_outer_radius}, 'out-elastic')
-		timer:after(2, function()
-			-- hyper_circle.radius = love.math.random() * 25 + 25
-			-- hyper_circle.outer_radius = hyper_circle.radius + love.math.random() * 10 + 40
-			print("wow")
-		end)
+		local new_radius = love.math.random() * 25 + 25
+		local new_outer_radius = new_radius + love.math.random() * 10 + 40
+		timer:tween('radius', 1, hyper_circle, {radius = new_radius}, 'out-elastic')
+		timer:tween('outer_radius', 2, hyper_circle, {outer_radius = new_outer_radius}, 'out-elastic')
 	end
 end
 
