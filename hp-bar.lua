@@ -11,16 +11,34 @@ function love.load()
 	--[[ INITIALIZATION ]]--
 	input = Input()
 	timer = Timer()
+
+	input:bind('mouse1', 'damage')
+	input:bind('r', 'reset')
+
+	hp = {front = 100, back = 100}
 end
 
 function love.update(dt)
 	timer:update(dt)
 
-	--
+	if input:pressed('damage') then
+		local new_hp = hp.front - (love.math.random() * 20)
+		if new_hp <= 0 then new_hp = 0 end
+		timer:tween('front_hp', .2, hp, {front = new_hp}, 'out-quad')
+		timer:tween('back_hp', .8, hp, {back = new_hp}, 'in-out-quad')
+	end
+
+	if input:pressed('reset') then
+		timer:tween('front_hp', 1, hp, {front = 100}, 'out-quad')
+		timer:tween('back_hp', 2, hp, {back = 100}, 'in-out-quad')
+	end
 end
 
 function love.draw()
-	--
+	love.graphics.setColor(100, 20, 0, 255)
+	love.graphics.rectangle('fill', 400 - 200, 300 - 50, (4) * hp.back, 100)
+	love.graphics.setColor(255, 50, 0, 255)
+	love.graphics.rectangle('fill', 400 - 200, 300 - 50, (4) * hp.front, 100)
 end
 
 --[[ HELPERS ]]--
