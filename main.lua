@@ -12,16 +12,38 @@ function love.load()
 	--[[ INITIALIZATION ]]--
 	input = Input()
 	timer = Timer()
+
+	input:bind('return', 'submit-text')
+	input:bind('kpenter', 'submit-text')
+	input:bind('backspace', 'delete-char')
+	consoleCache = {'Welcome to EXPAN 24.17', '14:21 Wed 5/3/2017', '', '[admin] $ '}
+	lineHeight = 20
 end
 
 function love.update(dt)
 	timer:update(dt)
 
-	--
+	if input:pressed('submit-text') then
+		if #consoleCache * lineHeight >= love.graphics.getHeight() - (lineHeight * 2) then
+			_.pop(consoleCache)
+		end
+		consoleCache[#consoleCache+1] = '[admin] $ '
+	end
+
+	if input:pressed('delete-char') then
+		consoleCache[#consoleCache] = consoleCache[#consoleCache]:sub(1, -2)
+	end
 end
 
 function love.draw()
-	--
+	for k, line in ipairs(consoleCache) do
+		love.graphics.setColor(255,255,255,255)
+		love.graphics.print(line, lineHeight, lineHeight * k)
+	end
+end
+
+function love.textinput(t)
+	consoleCache[#consoleCache] = consoleCache[#consoleCache] .. t
 end
 
 --[[ HELPERS ]]--
