@@ -20,16 +20,15 @@ function love.load()
 
 	gotoRoom('Menu', 'menu')
 
-	input:bind('1', 'goto_menu')
-	input:bind('2', 'goto_polygon')
+	input:bind('1', function() gotoRoom('Menu', 'menu') end)
+	input:bind('2', function() gotoRoom('Polygon', 'polygon') end)
 end
 
 function love.update(dt)
 	timer:update(dt)
 	if current_room then current_room:update(dt) end
 
-	if input:pressed('goto_menu') then gotoRoom('Menu', 'menu') end
-	if input:pressed('goto_polygon') then gotoRoom('Polygon', 'polygon') end
+	--
 end
 
 function love.draw()
