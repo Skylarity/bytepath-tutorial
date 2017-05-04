@@ -5,10 +5,10 @@ _ = require 'libraries/moses/Moses'
 
 function love.load()
 	--[[ REQUIRES ]]--
-	local object_files = {}
-	recursiveEnumerate('objects', object_files)
-	recursiveEnumerate('rooms', object_files)
-	requireFiles(object_files)
+	local files = {}
+	recursiveEnumerate('objects', files)
+	recursiveEnumerate('rooms', files)
+	requireFiles(files)
 
 	--[[ INITIALIZATION ]]--
 	input = Input()
@@ -17,13 +17,19 @@ function love.load()
 	--[[ ROOMS ]]--
 	rooms = {}
 	current_room = nil
+
+	gotoRoom('Menu', 'menu')
+
+	input:bind('1', 'goto_menu')
+	input:bind('2', 'goto_polygon')
 end
 
 function love.update(dt)
 	timer:update(dt)
 	if current_room then current_room:update(dt) end
 
-	--
+	if input:pressed('goto_menu') then gotoRoom('Menu', 'menu') end
+	if input:pressed('goto_polygon') then gotoRoom('Polygon', 'polygon') end
 end
 
 function love.draw()
@@ -45,7 +51,7 @@ function gotoRoom(room_type, room_name, ...)
 		current_room = rooms[room_name]
 		if current_room.activate then current_room:activate() end
 	else
-		current_room = addRoom(room_type room_name, ...)
+		current_room = addRoom(room_type, room_name, ...)
 	end
 end
 

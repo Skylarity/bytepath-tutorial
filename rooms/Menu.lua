@@ -9,7 +9,7 @@ function Menu:update(dt)
 end
 
 function Menu:draw()
-    -- body
+    love.graphics.circle('fill', love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 100)
 end
 
 function Menu:activate()
