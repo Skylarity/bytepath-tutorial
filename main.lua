@@ -7,46 +7,49 @@ function love.load()
 	--[[ REQUIRES ]]--
 	local object_files = {}
 	recursiveEnumerate('objects', object_files)
+	recursiveEnumerate('rooms', object_files)
 	requireFiles(object_files)
 
 	--[[ INITIALIZATION ]]--
 	input = Input()
 	timer = Timer()
 
-	input:bind('return', 'submit-text')
-	input:bind('kpenter', 'submit-text')
-	input:bind('backspace', 'delete-char')
-	consoleCache = {'Welcome to EXPAN 24.17', '14:21 Wed 5/3/2017', '', '[admin] $ '}
-	lineHeight = 20
+	--[[ ROOMS ]]--
+	rooms = {}
+	current_room = nil
 end
 
 function love.update(dt)
 	timer:update(dt)
+	if current_room then current_room:update(dt) end
 
-	if input:pressed('submit-text') then
-		if #consoleCache * lineHeight >= love.graphics.getHeight() - (lineHeight * 2) then
-			_.pop(consoleCache)
-		end
-		consoleCache[#consoleCache+1] = '[admin] $ '
-	end
-
-	if input:pressed('delete-char') then
-		consoleCache[#consoleCache] = consoleCache[#consoleCache]:sub(1, -2)
-	end
+	--
 end
 
 function love.draw()
-	for k, line in ipairs(consoleCache) do
-		love.graphics.setColor(255,255,255,255)
-		love.graphics.print(line, lineHeight, lineHeight * k)
-	end
-end
-
-function love.textinput(t)
-	consoleCache[#consoleCache] = consoleCache[#consoleCache] .. t
+	if current_room then current_room:draw() end
+	--
 end
 
 --[[ HELPERS ]]--
+
+function addRoom(room_type, room_name, ...)
+	local room = _G[room_type](room_name, ...)
+	rooms[room_name] = room
+	return room
+end
+
+function gotoRoom(room_type, room_name, ...)
+	if current_room and rooms[room_name] then
+		if current_room.deactivate then current_room:deactivate() end
+		current_room = rooms[room_name]
+		if current_room.activate then current_room:activate() end
+	else
+		current_room = addRoom(room_type room_name, ...)
+	end
+end
+
+--[[ LOADING ]]--
 
 function recursiveEnumerate(folder, file_list)
 	local items = love.filesystem.getDirectoryItems(folder)
