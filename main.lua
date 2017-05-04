@@ -18,6 +18,8 @@ function love.load()
 	--[[ ROOMS ]]--
 	rooms = {}
 	current_room = nil
+
+	gotoRoom('Stage')
 end
 
 function love.update(dt)
