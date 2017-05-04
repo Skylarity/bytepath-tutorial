@@ -1,7 +1,7 @@
 Object = require 'libraries/classic/classic'
 Input = require 'libraries/boipushy/Input'
 Timer = require 'libraries/enhanced_timer/EnhancedTimer'
-_ = require 'libraries/moses/Moses'
+Moses = require 'libraries/moses/Moses'
 
 function love.load()
 	--[[ REQUIRES ]]--
@@ -55,7 +55,7 @@ end
 function recursiveEnumerate(folder, file_list)
 	local items = love.filesystem.getDirectoryItems(folder)
 
-	for k, item in ipairs(items) do
+	for _, item in ipairs(items) do
 		local file = folder .. '/' .. item
 
 		if love.filesystem.isFile(file) then
@@ -67,7 +67,7 @@ function recursiveEnumerate(folder, file_list)
 end
 
 function requireFiles(files)
-	for k, file in ipairs(files) do
+	for _, file in ipairs(files) do
 		local file = file:sub(1, -5)
 		require(file)
 	end
