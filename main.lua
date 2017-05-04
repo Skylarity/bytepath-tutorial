@@ -3,6 +3,8 @@ Object = require 'libraries/classic/classic'
 Input = require 'libraries/boipushy/Input'
 Timer = require 'libraries/enhanced_timer/EnhancedTimer'
 Moses = require 'libraries/moses/Moses'
+require 'rooms/Room'
+require 'objects/GameObject'
 
 function love.load()
 	--[[ REQUIRES ]]--
