@@ -17,11 +17,6 @@ function love.load()
 	--[[ ROOMS ]]--
 	rooms = {}
 	current_room = nil
-
-	gotoRoom('Menu', 'menu')
-
-	input:bind('1', function() gotoRoom('Menu', 'menu') end)
-	input:bind('2', function() gotoRoom('Polygon', 'polygon') end)
 end
 
 function love.update(dt)
@@ -33,6 +28,7 @@ end
 
 function love.draw()
 	if current_room then current_room:draw() end
+
 	--
 end
 
